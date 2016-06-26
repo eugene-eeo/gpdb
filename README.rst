@@ -31,9 +31,11 @@ TODO:
 -----
 
 - Model network 'partitions', where each nodes belong to evenly
-  sized, connected clusters that can only communicate amongst one
-  another, and have one link to another cluster. However the
-  messages sent within and across clusters are also subject to
-  bandwidth **B**.
+  sized clusters that can only communicate amongst one another,
+  and have one link to another cluster. However the messages
+  sent within and across clusters are also subject to bandwidth
+  **B**. This is more realistic as we tend to have a network
+  topology of multiple 'clusters' when we want to use gossip
+  protocols.
 - Optimise code - perhaps write it in Rust?
 - More results.
