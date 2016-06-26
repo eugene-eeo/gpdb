@@ -12,35 +12,29 @@ Options:
   -M M       ending messages per node   [default: 10].
 """
 
-import sys
 import json
+from itertools import repeat
 from docopt import docopt
 from gpdb import simulate
 from concurrent.futures import ProcessPoolExecutor
-from statistics import mean, stdev, median
 
 
 def emit(D):
     print(json.dumps(D))
 
 
-def task(T):
-    B, M = T
+def task(arg):
+    M, B = arg
     return len(list(simulate(100, bandwidth=B, messages=M)))
-
-
-def simulate_big(B, M, executor, times):
-    arg = (B, M)
-    u = sorted(executor.map(
-        task,
-        (arg for _ in range(times))
-        ))
-    return mean(u), stdev(u), median(u)
 
 
 def gensim(M, brange, executor, times):
     for b in range(*brange):
-        yield b, simulate_big(b, M, executor, times)
+        results = list(executor.map(
+            task,
+            repeat((M, b), times)
+            ))
+        yield b, results
 
 
 def main():
@@ -54,16 +48,11 @@ def main():
 
     brange = (b0, b1)
 
-    emit(['M', 'B', 'mean', 'stdev', 'median'])
+    emit(['M', 'B', 'results'])
     with ProcessPoolExecutor() as executor:
         for M in range(m0, m1):
-            for B, (avg, std, q2) in gensim(M, brange, executor, T):
-                emit([
-                    M, B,
-                    avg,
-                    std,
-                    q2,
-                ])
+            for B, results in gensim(M, brange, executor, T):
+                emit([M, B, results])
 
 
 if __name__ == '__main__':
