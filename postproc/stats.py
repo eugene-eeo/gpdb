@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from statistics import mean, median, stdev
 import newlinejson as nlj
 import sys
