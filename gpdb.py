@@ -1,12 +1,5 @@
+from random import shuffle, choice
 from itertools import islice
-from fast_prng import uniform
-
-
-def knuth_shuffle(items):
-    L = len(items)
-    for i in range(L):
-        j = int(uniform(i, L))
-        items[i], items[j] = items[j], items[i]
 
 
 class Gossiper:
@@ -22,7 +15,7 @@ class Gossiper:
         peers = list(peers - self.told)
         if not peers:
             return 0
-        some = peers[int(uniform(0, len(peers)))]
+        some = choice(peers)
         some.send(self)
         self.told.add(some)
         return 1
@@ -52,4 +45,4 @@ def simulate(size, bandwidth, messages):
         yield k
         if k == size:
             break
-        knuth_shuffle(K)
+        shuffle(K)
