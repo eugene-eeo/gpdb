@@ -5,10 +5,14 @@ from tabulate import tabulate
 import statistics as stats
 
 
+def task(T):
+    B, M = T
+    return len(list(simulate(100, bandwidth=B, messages=M)))
+
+
 def simulate_big(B, M, executor, times):
     u = []
-    task = lambda _: len(list(simulate(100, bandwidth=B, messages=M)))
-    for k in executor.map(task, range(times)):
+    for k in executor.map(task, ((B,M) for _ in range(times))):
         u.append(k)
     u.sort()
     return (
