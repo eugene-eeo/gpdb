@@ -5,9 +5,9 @@ from tabulate import tabulate
 import statistics as stats
 
 
-def simulate_big(N, M, executor, times):
+def simulate_big(B, M, executor, times):
     u = []
-    task = lambda _: len(list(simulate(100, bandwidth=N, messages=M)))
+    task = lambda _: len(list(simulate(100, bandwidth=B, messages=M)))
     for k in executor.map(task, range(times)):
         u.append(k)
     u.sort()
@@ -19,8 +19,8 @@ def simulate_big(N, M, executor, times):
 
 
 def main(M, executor, times):
-    for N in range(2, 101):
-        yield N, simulate_big(N, M, executor, times)
+    for B in range(2, 101):
+        yield B, simulate_big(B, M, executor, times)
 
 
 if __name__ == '__main__':
@@ -28,12 +28,12 @@ if __name__ == '__main__':
 
     with ProcessPoolExecutor() as executor:
         for M in range(1, 11):
-            print(M, 'message(s) per tick:')
+            print('M =', M)
             table = []
-            for N, (mean, stdev, median) in main(M, executor, times):
-                table.append([N, mean, stdev, median])
+            for B, (mean, stdev, median) in main(M, executor, times):
+                table.append([B, mean, stdev, median])
             print(tabulate(
                 table,
-                headers=["bandwidth", "mean", "stdev", "median"],
+                headers=["B", "mean", "stdev", "median"],
                 tablefmt="rst"
                 ))
