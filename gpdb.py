@@ -3,11 +3,10 @@ from itertools import islice
 
 
 class Gossiper:
-    __slots__ = ('told', 'data', 'has_knowledge')
+    __slots__ = ('told', 'has_knowledge')
 
     def __init__(self, data=None):
         self.told = set()
-        self.data = data
         self.has_knowledge = False
 
     def tell(self, peers):
@@ -17,18 +16,16 @@ class Gossiper:
         if not peers:
             return
         some = random.choice(list(peers))
-        some.send(self, self.data)
+        some.send(self)
         self.told.add(some)
 
-    def send(self, sender, data):
-        self.data = data
+    def send(self, sender):
         self.told.add(sender)
         self.has_knowledge = True
 
 
 def simulate(size, bandwidth, messages):
     peers = [Gossiper() for _ in range(size)]
-    peers[0].data = 1
     peers[0].has_knowledge = True
     P = set(peers)
     knows = 1

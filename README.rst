@@ -13,6 +13,10 @@ on each tick, i.e. the number of messages sent at each tick is at most
 - Any nodes can send to any other node in the network. In practice
   this is far from the truth, but for simplicity we will make this
   assumption.
+- All nodes send messages at specific times.
+
+What is being measured is the number of iterations/ticks required in
+order to make every peer/node aware of the message.
 
 The simulations are best run in PyPy and a multi-core machine where it
 will work it's JIT magic and make the code run hopefully faster.
