@@ -41,4 +41,4 @@ def simulate(size, bandwidth, messages):
 
         knows = [p for p in peers if p.has_knowledge]
         yield len(knows)
-        random.shuffle(peers)
+        random.shuffle(knows)
