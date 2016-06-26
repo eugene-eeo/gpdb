@@ -1,5 +1,5 @@
-from random import shuffle, choice
 from itertools import islice
+from random import choice, shuffle
 
 
 class Gossiper:

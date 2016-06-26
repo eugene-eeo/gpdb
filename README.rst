@@ -27,7 +27,7 @@ machine) can be found in the ``results.jsonl`` file. Parameters:
 
 - **N = 100**
 - **2 ≤ B ≤ 100**
-- **1 ≤ M ≤ 10**
+- **1 ≤ M ≤ 20**
 
 Instructions
 ------------
