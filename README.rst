@@ -23,7 +23,7 @@ order to make every peer/node aware of the message.
 The simulations are best run in PyPy and a multi-core machine where it
 will work it's JIT magic. Currently the results (50 iterations on a
 4-core machine, will improve once I get to run it on a more powerful
-machine) can be found in the ``results.txt`` file. Parameters:
+machine) can be found in the ``results.jsonl`` file. Parameters:
 
 - **N = 100**
 - **2 ≤ B ≤ 100**
@@ -34,8 +34,7 @@ Instructions
 
 To run the simulations::
 
-    $ pip install tabulate
-    $ pip install statistics # python2/pypy
+    $ pip install -r requirements.txt
     $ python test.py
 
 

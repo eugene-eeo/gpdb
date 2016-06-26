@@ -1,8 +1,27 @@
+"""
+Usage:
+  test.py [-t T] [-b b] [-B B] [-m m] [-M M]
+  test.py (-h | --help)
+
+Options:
+  -h --help  show this.
+  -t T       no. of iterations  [default: 50].
+  -b b       starting bandwidth [default: 2].
+  -B B       ending bandwidth   [default: 100].
+  -m m       starting messages per node [default: 1].
+  -M M       ending messages per node   [default: 10].
+"""
+
 import sys
+import json
+from docopt import docopt
 from gpdb import simulate
 from concurrent.futures import ProcessPoolExecutor
-from tabulate import tabulate
-import statistics as stats
+from statistics import mean, stdev, median
+
+
+def emit(D):
+    print(json.dumps(D))
 
 
 def task(T):
@@ -11,33 +30,41 @@ def task(T):
 
 
 def simulate_big(B, M, executor, times):
-    u = []
-    for k in executor.map(task, ((B,M) for _ in range(times))):
-        u.append(k)
-    u.sort()
-    return (
-        stats.mean(u),
-        stats.stdev(u),
-        stats.median(u),
-        )
+    arg = (B, M)
+    u = sorted(executor.map(
+        task,
+        (arg for _ in range(times))
+        ))
+    return mean(u), stdev(u), median(u)
 
 
-def main(M, executor, times):
-    for B in range(2, 101):
-        yield B, simulate_big(B, M, executor, times)
+def gensim(M, brange, executor, times):
+    for b in range(*brange):
+        yield b, simulate_big(b, M, executor, times)
+
+
+def main():
+    args = docopt(__doc__, version='0.1')
+    m0, m1 = int(args['-m']), int(args['-M']) + 1
+    b0, b1 = int(args['-b']), int(args['-B']) + 1
+    T      = int(args['-t'])
+
+    assert m0 < m1
+    assert b0 < b1
+
+    brange = (b0, b1)
+
+    emit(['M', 'B', 'mean', 'stdev', 'median'])
+    with ProcessPoolExecutor() as executor:
+        for M in range(m0, m1):
+            for B, (avg, std, q2) in gensim(M, brange, executor, T):
+                emit([
+                    M, B,
+                    avg,
+                    std,
+                    q2,
+                ])
 
 
 if __name__ == '__main__':
-    times = int(sys.argv[2] if len(sys.argv) >= 2 else 50)
-
-    with ProcessPoolExecutor() as executor:
-        for M in range(1, 11):
-            print('M =', M)
-            table = []
-            for B, (mean, stdev, median) in main(M, executor, times):
-                table.append([B, mean, stdev, median])
-            print(tabulate(
-                table,
-                headers=["B", "mean", "stdev", "median"],
-                tablefmt="rst"
-                ))
+    main()
