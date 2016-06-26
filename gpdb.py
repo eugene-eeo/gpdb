@@ -29,16 +29,16 @@ def simulate(size, bandwidth, messages):
     peers = [Gossiper() for _ in range(size)]
     peers[0].has_knowledge = True
     P = frozenset(peers)
-    knows = 1
+    knows = [peers[0]]
 
-    while knows != size:
+    while len(knows) != size:
         available = bandwidth
-        for p in [p for p in peers if p.has_knowledge]:
+        for p in knows:
             for _ in range(min(available, messages)):
                 available -= p.tell(P)
             if available == 0:
                 break
 
-        knows = sum(1 for k in peers if k.has_knowledge)
-        yield knows
+        knows = [p for p in peers if p.has_knowledge]
+        yield len(knows)
         random.shuffle(peers)
