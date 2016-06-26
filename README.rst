@@ -26,6 +26,8 @@ TODO:
 
 - Model network 'partitions', where each nodes belong to evenly
   sized, connected clusters that can only communicate amongst one
-  another, and have one link to another cluster.
+  another, and have one link to another cluster. However the
+  messages sent within and across clusters are also subject to
+  bandwidth **B**.
 - Optimise code - perhaps write it in Rust?
 - More results.
