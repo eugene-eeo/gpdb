@@ -36,7 +36,11 @@ To run the simulations::
 
     $ pip install -r requirements.txt
     $ pip install statistics # pypy or python2
-    $ python test.py
+    $ python test.py > results.jsonl
+
+To do post-processing::
+
+    $ cat results.jsonl | postproc/stats.py | postproc/table.py
 
 
 TODO:
