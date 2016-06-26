@@ -3,6 +3,8 @@ from itertools import islice
 
 
 class Gossiper:
+    __slots__ = ('told', 'data', 'has_knowledge')
+
     def __init__(self, data=None):
         self.told = set()
         self.data = data
@@ -34,9 +36,10 @@ def simulate(size, bandwidth, messages):
     while knows != size:
         available = bandwidth
         for p in [p for p in peers if p.has_knowledge]:
-            for _ in range(min(available, messages)):
-                available -= 1
+            N = min(available, messages)
+            for _ in range(N):
                 p.tell(P)
+            available -= N
             if available == 0:
                 break
 
