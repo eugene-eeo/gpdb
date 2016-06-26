@@ -20,3 +20,12 @@ However I will still optimise the code from time to time. Currently
 the results (50 iterations on a 4-core machine, will improve once
 I get to run it on a more powerful machine) can be found in the
 ``results.txt`` file.
+
+TODO:
+-----
+
+- Model network 'partitions', where each nodes belong to evenly
+  sized, connected clusters that can only communicate amongst one
+  another, and have one link to another cluster.
+- Optimise code - perhaps write it in Rust?
+- More results.
