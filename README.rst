@@ -14,6 +14,8 @@ on each tick, i.e. the number of messages sent at each tick is at most
   this is far from the truth, but for simplicity we will make this
   assumption.
 - All nodes send messages at specific times.
+- Nodes will not send messages to those that they have received
+  messages from, or those which they have already sent to.
 
 What is being measured is the number of iterations/ticks required in
 order to make every peer/node aware of the message.
