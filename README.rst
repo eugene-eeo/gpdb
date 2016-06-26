@@ -25,7 +25,11 @@ will work it's JIT magic and make the code run hopefully faster.
 However I will still optimise the code from time to time. Currently
 the results (50 iterations on a 4-core machine, will improve once
 I get to run it on a more powerful machine) can be found in the
-``results.txt`` file.
+``results.txt`` file. Parameters:
+
+ - **N = 100**
+ - **2 ≤ B ≤ 100**
+ - **1 ≤ M ≤ 10**
 
 TODO:
 -----
