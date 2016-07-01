@@ -28,9 +28,7 @@ def task(arg):
     return len(list(simulate(100, bandwidth=B, messages=M)))
 
 
-def run(dst, mrange, brange, executor, times, debug):
-    stderr = sys.stderr
-    dst.write(['M', 'B', 'results'])
+def run(mrange, brange, executor, times):
     for M in range(*mrange):
         for B in range(*brange):
             start = time()
@@ -39,10 +37,8 @@ def run(dst, mrange, brange, executor, times, debug):
                 repeat((M, B), times)
                 ))
             end = time()
-            if debug:
-                stderr.write('M=%d, B=%d, t=%f\n' % (M, B, end-start))
-                stderr.flush()
-            dst.write([M, B, results])
+            dt = end - start
+            yield M, B, results, dt
 
 
 def main():
@@ -57,10 +53,16 @@ def main():
 
     mrange = (m0, m1)
     brange = (b0, b1)
+    stderr = sys.stderr
 
     with nlj.open(sys.stdout, 'w') as dst:
+        dst.write(['M', 'B', 'results'])
         with ProcessPoolExecutor() as exe:
-            run(dst, mrange, brange, exe, times, debug)
+            for M, B, R, dt in run(mrange, brange, exe, times):
+                if debug:
+                    stderr.write('M=%d, B=%d, t=%f\n' % (M, B, dt))
+                    stderr.flush()
+                dst.write([M, B, R])
 
 
 if __name__ == '__main__':
