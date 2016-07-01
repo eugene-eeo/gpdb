@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from statistics import mean, median, stdev
+from statistics import mean, median, pstdev
 import newlinejson as nlj
 import sys
 
@@ -16,12 +16,13 @@ def main():
             for line in src:
                 M, B, R = line
                 R.sort()
+                mu = mean(R)
                 dst.write([
                     M,
                     B,
-                    mean(R),
+                    mu,
                     median(R),
-                    stdev(R),
+                    pstdev(R, mu=mu),
                 ])
 
 if __name__ == '__main__':
