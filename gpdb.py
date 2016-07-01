@@ -11,14 +11,14 @@ class Gossiper:
 
     def tell(self, peers):
         if not self.has_knowledge:
-            return 0
-        peers = list(peers - self.told)
-        if not peers:
-            return 0
-        some = choice(peers)
-        some.send(self)
-        self.told.add(some)
-        return 1
+            return False
+        peers = peers - self.told
+        if peers:
+            some = choice(list(peers))
+            some.send(self)
+            self.told.add(some)
+            return True
+        return False
 
     def send(self, sender):
         self.told.add(sender)
@@ -36,7 +36,10 @@ def simulate(size, bandwidth, messages):
         quota = bandwidth
         for p in K:
             for _ in range(min(quota, messages)):
-                quota -= p.tell(P)
+                sent = p.tell(P)
+                if not sent:
+                    break
+                quota -= 1
             if quota == 0:
                 break
 
