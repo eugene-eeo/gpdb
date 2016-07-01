@@ -20,10 +20,7 @@ on each tick, i.e. the number of messages sent at each tick is at most
 What is being measured is the number of iterations/ticks required in
 order to make every peer/node aware of the message.
 
-The simulations are best run in PyPy and a multi-core machine where it
-will work it's JIT magic. Currently the results (100 iterations on a
-4-core machine, will improve once I get to run it on a more powerful
-machine) can be found in the ``results.jsonl`` file. Parameters:
+Default simulation parameters:
 
 - **N = 100**
 - **2 ≤ B ≤ 100**
@@ -34,13 +31,10 @@ Instructions
 
 To run the simulations::
 
-    $ pip install -r requirements.txt
     $ pip install statistics # pypy or python2
-    $ python test.py > results.jsonl
-
-To do post-processing::
-
-    $ cat results.jsonl | postproc/stats.py | postproc/table.py
+    $ make install
+    $ make
+    $ cat stats.jsonl | postproc/table.py # optional
 
 
 TODO:
