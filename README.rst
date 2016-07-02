@@ -7,15 +7,14 @@ on each tick, i.e. the number of messages sent at each tick is at most
 **B**. Assumptions:
 
 - A fully reliable network, where no messages are dropped as long
-  as fewer than **B** are sent.
+  as fewer than **B** messages are sent.
 - All messages after **B** messages are sent are dropped.
-- Nodes will fire and forget messages.
-- Any nodes can send to any other node in the network. In practice
-  this is far from the truth, but for simplicity we will make this
-  assumption.
+- Any nodes can send to any other node in the network.
 - All nodes send messages at specific times.
-- Nodes will not send messages to those that they have received
-  messages from, or those which they have already sent to.
+- Nodes will fire and forget messages.
+- At each tick they will randomly pick at most **M** distinct nodes
+  that they have not communicated with (sent to/received from) and
+  send messages to them.
 
 What is being measured is the number of iterations/ticks required in
 order to make every peer/node aware of the message.
