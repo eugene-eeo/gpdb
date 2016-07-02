@@ -42,8 +42,6 @@ TODO:
 
 - Model network 'partitions', where each nodes belong to evenly
   sized clusters that can only communicate amongst one another,
-  and have one link to another cluster. However the messages
-  sent within and across clusters are also subject to bandwidth
-  **B**. This is more realistic as we tend to have a network
-  topology of multiple 'clusters' when we want to use gossip
-  protocols.
+  and have a 'leader' which can communicate with leaders from any
+  other clusters. However the messages sent within and across
+  clusters are also subject to bandwidth **B**.
