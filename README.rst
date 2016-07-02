@@ -17,7 +17,9 @@ on each tick, i.e. the number of messages sent at each tick is at most
   send messages to them.
 
 What is being measured is the number of iterations/ticks required in
-order to make every peer/node aware of the message.
+order to make every peer/node aware of the message. Typically the
+lower the number of ticks, the better. But this comes with a cost
+in **B** and **M**.
 
 Default simulation parameters:
 
