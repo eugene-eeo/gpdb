@@ -34,7 +34,8 @@ To run the simulations::
     $ pip install statistics # pypy or python2
     $ make install
     $ make
-    $ cat stats.jsonl | postproc/table.py # optional
+    # optional, needs framework python.
+    $ cat stats.jsonl | postproc/plot.py
 
 
 TODO:
