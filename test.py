@@ -1,15 +1,13 @@
 """
 Usage:
-  test.py [-t T] [-b b] [-B B] [-m m] [-M M] [--debug]
+  test.py [-t T] [-B brange] [-M mrange] [--debug]
   test.py (-h | --help)
 
 Options:
   -h --help  show this.
-  -t T       no. of iterations  [default: 50].
-  -b b       starting bandwidth [default: 2].
-  -B B       ending bandwidth   [default: 100].
-  -m m       starting messages per node [default: 1].
-  -M M       ending messages per node   [default: 10].
+  -t T       no. of iterations          [default: 50].
+  -B brange  bandwidth (min,max,step)   [default: 1,100,5].
+  -M mrange  messages  (min,max,step)   [default: 1,10,1].
   --debug    show debug info.
 """
 
@@ -21,6 +19,11 @@ from docopt import docopt
 
 import newlinejson as nlj
 from gpdb import simulate
+
+
+def parse_step(step):
+    m, M, s = tuple(int(k) for k in step.split(','))
+    return (m, M+1, s)
 
 
 def task(arg):
@@ -45,16 +48,10 @@ def run(mrange, brange, executor, times):
 
 def main():
     args = docopt(__doc__, version='0.1')
-    m0, m1 = int(args['-m']), int(args['-M']) + 1
-    b0, b1 = int(args['-b']), int(args['-B']) + 1
+    mrange = parse_step(args['-M'])
+    brange = parse_step(args['-B'])
     times  = int(args['-t'])
     debug  = args['--debug']
-
-    assert m0 < m1
-    assert b0 < b1
-
-    mrange = (m0, m1)
-    brange = (b0, b1)
     stderr = sys.stderr
 
     with nlj.open(sys.stdout, 'w') as dst:

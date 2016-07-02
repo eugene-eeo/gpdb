@@ -28,18 +28,17 @@ class Node:
 
 
 def allocate(size):
-    peers = [Node() for _ in range(size)]
-    P = set(peers)
+    peers = set(Node() for _ in range(size))
     for node in peers:
-        node.peers = P
+        node.peers = peers
 
-    start = peers[0]
+    start = next(iter(peers))
     start.has_knowledge = True
-    return peers, start
+    return start
 
 
 def simulate(size, bandwidth, messages):
-    peers, start = allocate(size)
+    start = allocate(size)
     K = [start]
     knows = {start}
 
