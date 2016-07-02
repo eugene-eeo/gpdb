@@ -31,6 +31,8 @@ def task(arg):
 def run(mrange, brange, executor, times):
     for M in range(*mrange):
         for B in range(*brange):
+            if B < M:
+                continue
             start = time()
             results = list(executor.map(
                 task,
