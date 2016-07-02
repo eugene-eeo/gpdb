@@ -47,5 +47,3 @@ TODO:
   **B**. This is more realistic as we tend to have a network
   topology of multiple 'clusters' when we want to use gossip
   protocols.
-- Optimise code - perhaps write it in Rust?
-- More results.
