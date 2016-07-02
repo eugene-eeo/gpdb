@@ -6,8 +6,8 @@ Usage:
 Options:
   -h --help  show this.
   -t T       no. of iterations          [default: 50].
-  -B brange  bandwidth (min,max,step)   [default: 1,100,5].
-  -M mrange  messages  (min,max,step)   [default: 1,10,1].
+  -B brange  bandwidth (min,max,step)   [default: 2,100,1].
+  -M mrange  messages  (min,max,step)   [default: 1,20,1].
   --debug    show debug info.
 """
 
@@ -21,6 +21,16 @@ import newlinejson as nlj
 from gpdb import simulate
 
 
+def rng(start, stop, step):
+    m = 0
+    n = 1
+    while n < stop:
+        if n >= start:
+            yield n
+        m += 1
+        n = step * m
+
+
 def parse_step(step):
     m, M, s = tuple(int(k) for k in step.split(','))
     return (m, M+1, s)
@@ -32,8 +42,8 @@ def task(arg):
 
 
 def run(mrange, brange, executor, times):
-    for M in range(*mrange):
-        for B in range(*brange):
+    for M in rng(*mrange):
+        for B in rng(*brange):
             if B < M:
                 continue
             start = time()
