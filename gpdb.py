@@ -44,6 +44,7 @@ def simulate(size, bandwidth, messages):
 
     while True:
         quota = bandwidth
+        shuffle(K)
         for p in K:
             for _ in range(min(quota, messages)):
                 node = p.tell()
@@ -59,4 +60,3 @@ def simulate(size, bandwidth, messages):
         yield k
         if k == size:
             break
-        shuffle(K)
