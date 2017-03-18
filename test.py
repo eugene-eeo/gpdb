@@ -5,8 +5,8 @@ Usage:
 
 Options:
   -h --help  show this.
-  -t T       no. of iterations          [default: 50].
-  -B brange  bandwidth (min,max,step)   [default: 2,100,1].
+  -t T       no. of iterations          [default: 200].
+  -B brange  bandwidth (min,max,step)   [default: 1,500,50].
   -M mrange  messages  (min,max,step)   [default: 1,20,1].
   --debug    show debug info.
 """
@@ -24,16 +24,18 @@ from gpdb import simulate
 def rng(start, stop, step):
     m = 0
     n = 1
+    yield start
     while n < stop:
-        if n >= start:
+        if n > start:
             yield n
         m += 1
         n = step * m
+    yield stop
 
 
 def parse_step(step):
     m, M, s = tuple(int(k) for k in step.split(','))
-    return (m, M+1, s)
+    return (m, M, s)
 
 
 def task(arg):
@@ -44,8 +46,6 @@ def task(arg):
 def run(mrange, brange, executor, times):
     for M in rng(*mrange):
         for B in rng(*brange):
-            if B < M:
-                continue
             start = time()
             results = list(executor.map(
                 task,
