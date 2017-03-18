@@ -30,13 +30,11 @@ Default simulation parameters:
 Instructions
 ------------
 
-To run the simulations::
+To run the simulations and plot the results::
 
     $ pip install statistics # pypy or python2
     $ make install
     $ make
-    # optional, needs framework python.
-    $ cat stats.jsonl | postproc/plot.py
 
 
 TODO:
