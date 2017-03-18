@@ -23,10 +23,11 @@ def main():
             plt.title('Bandwidth (B): %d messages' % (B,))
             plt.xlabel('messages per node (M)')
             plt.ylabel('ticks')
+            plt.xlim([0, max(row) + 1])
             plt.errorbar(
                 list(row.keys()),
                 [y for y, _ in row.values()],
-                fmt='bo',
+                fmt='ko',
                 yerr=[err for _, err in row.values()])
             plt.grid(True)
             pdf.savefig()
