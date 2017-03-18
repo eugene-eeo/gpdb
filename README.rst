@@ -24,7 +24,7 @@ in **B** and **M**.
 Default simulation parameters:
 
 - **N = 100**
-- **2 ≤ B ≤ 100**
+- **1 ≤ B ≤ 500**
 - **1 ≤ M ≤ 20**
 
 Instructions
