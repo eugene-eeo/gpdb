@@ -6,7 +6,7 @@ Usage:
 Options:
   -h --help  show this.
   -t T       no. of iterations          [default: 200].
-  -B brange  bandwidth (min,max,step)   [default: 1,500,50].
+  -B brange  bandwidth (min,max,step)   [default: 50,500,50].
   -M mrange  messages  (min,max,step)   [default: 1,20,1].
   --debug    show debug info.
 """

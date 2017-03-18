@@ -11,16 +11,14 @@ class Node:
         self.peers = None
 
     def tell(self):
-        if not self.has_knowledge:
-            return
-        peers = self.peers - self.told
-        peers.remove(self)
-        if peers:
-            some = choice(list(peers))
-            some.send(self)
-            self.told.add(some)
-            return some
-        return
+        if self.has_knowledge:
+            peers = self.peers - self.told
+            if peers:
+                some = choice(list(peers))
+                some.send(self)
+                self.told.add(some)
+                return some, True
+        return None, False
 
     def send(self, sender):
         self.told.add(sender)
@@ -30,7 +28,7 @@ class Node:
 def allocate(size):
     peers = set(Node() for _ in range(size))
     for node in peers:
-        node.peers = peers
+        node.peers = peers - {node}
 
     start = next(iter(peers))
     start.has_knowledge = True
@@ -46,9 +44,11 @@ def simulate(size, bandwidth, messages):
         quota = bandwidth
         shuffle(K)
         for p in K:
+            # to make sure we do not send more than B messages
+            # we need to check if we have any remaining quota.
             for _ in range(min(quota, messages)):
-                node = p.tell()
-                if not node:
+                node, ok = p.tell()
+                if not ok:
                     break
                 knows.add(node)
                 quota -= 1
