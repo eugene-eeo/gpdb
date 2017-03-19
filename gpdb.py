@@ -1,27 +1,24 @@
 from itertools import islice
-from random import choice, shuffle
+from random import shuffle, choice
 
 
 class Node:
-    __slots__ = ('told', 'has_knowledge', 'peers')
+    __slots__ = ('has_knowledge', 'peers')
 
     def __init__(self):
-        self.told = set()
         self.has_knowledge = False
         self.peers = None
 
     def tell(self):
-        if self.has_knowledge:
-            peers = self.peers - self.told
-            if peers:
-                some = choice(list(peers))
-                some.send(self)
-                self.told.add(some)
-                return some, True
+        if self.has_knowledge and self.peers:
+            peer = choice(list(self.peers))
+            peer.recv(self)
+            self.peers.remove(peer)
+            return peer, True
         return None, False
 
-    def send(self, sender):
-        self.told.add(sender)
+    def recv(self, sender):
+        self.peers.remove(sender)
         self.has_knowledge = True
 
 
@@ -37,25 +34,22 @@ def allocate(size):
 
 def simulate(size, bandwidth, messages):
     start = allocate(size)
-    K = [start]
     knows = {start}
 
     while True:
         quota = bandwidth
-        shuffle(K)
-        for p in K:
-            # to make sure we do not send more than B messages
-            # we need to check if we have any remaining quota.
-            for _ in range(min(quota, messages)):
-                node, ok = p.tell()
-                if not ok:
-                    break
-                knows.add(node)
-                quota -= 1
-            if quota == 0:
-                break
+        T = {node: messages for node in knows}
+        while T and quota > 0:
+            node, count = T.popitem()
+            if count == 0:
+                continue
+            peer, ok = node.tell()
+            if not ok:
+                continue
+            knows.add(peer)
+            T[node] = count - 1
+            quota -= 1
 
-        K = list(knows)
         k = len(knows)
         yield k
         if k == size:
