@@ -11,7 +11,6 @@ on each tick, i.e. the number of messages sent at each tick is at most
 - All messages after **B** messages are sent are dropped.
 - Any nodes can send to any other node in the network.
 - All nodes send messages at specific times.
-- Nodes will fire and forget messages.
 - At each tick they will randomly pick at most **M** distinct nodes
   that they have not communicated with (sent to/received from) and
   send messages to them.
