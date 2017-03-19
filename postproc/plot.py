@@ -8,7 +8,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 from statistics import median
 
 
-def main():
+def main(filename):
     tbl = defaultdict(dict)
     sys.stdin.readline()
     for line in sys.stdin:
@@ -17,7 +17,7 @@ def main():
         tbl[B][M] = median(ticks), (max(ticks) - min(ticks)) / 2.0
 
 
-    with PdfPages('results.pdf') as pdf:
+    with PdfPages(filename) as pdf:
         for i, B in enumerate(sorted(tbl)):
             row = tbl[B]
             plt.title('Bandwidth (B): %d messages' % (B,))
@@ -35,4 +35,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    filename = sys.argv[1] if len(sys.argv) > 1 else 'results.pdf'
+    main(filename)
