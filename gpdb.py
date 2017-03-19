@@ -1,27 +1,24 @@
 from itertools import islice
-from random import choice, shuffle
+from random import shuffle, choice
 
 
 class Node:
-    __slots__ = ('told', 'has_knowledge', 'peers')
+    __slots__ = ('has_knowledge', 'peers')
 
     def __init__(self):
-        self.told = set()
         self.has_knowledge = False
         self.peers = None
 
     def tell(self):
-        if self.has_knowledge:
-            peers = self.peers - self.told
-            if peers:
-                some = choice(list(peers))
-                some.send(self)
-                self.told.add(some)
-                return some, True
+        if self.has_knowledge and self.peers:
+            peer = choice(list(self.peers))
+            peer.recv(self)
+            self.peers.remove(peer)
+            return peer, True
         return None, False
 
-    def send(self, sender):
-        self.told.add(sender)
+    def recv(self, sender):
+        self.peers.remove(sender)
         self.has_knowledge = True
 
 
