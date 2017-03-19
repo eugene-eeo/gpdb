@@ -7,16 +7,17 @@ of **B** messages on each tick. Assumptions:
 
 - A fully reliable network, where no messages are dropped as long
   as fewer than **B** messages are sent.
-- All messages after **B** messages are sent are dropped.
+- All messages after **B** messages will fail and nodes will know
+  of the failure.
 - Any node can send to any other node in the network.
-- All nodes send messages at specific times.
-- At each tick random nodes will communicate with at most **M**
-  random, distinct nodes that they have not sent to/received from.
+- All nodes send messages at the same time.
 
-What is being measured is the number of iterations/ticks required
-in order to make every node aware of the message. Typically the
-lower the number of ticks, the better. But this comes with a cost
-in **B** and **M**.
+At each tick nodes that have received the message will try to
+communicate with at most **M** random, distinct nodes that they
+have not successfully sent to/received from, and a random subset
+of at most size **B** of those attempts will be succesful. The
+number of ticks required in order to make every node aware of the
+message is measured.
 
 Default simulation parameters:
 
