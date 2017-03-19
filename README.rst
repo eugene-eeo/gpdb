@@ -1,22 +1,20 @@
 gpdb
 ====
 
-An experiment in modelling a gossip protocol of **N** peers, subject
-to each node sending **M** messages, and a bandwidth of **B** messages
-on each tick, i.e. the number of messages sent at each tick is at most
-**B**. Assumptions:
+An experiment in modelling a gossip protocol of **N** peers,
+subject to each node sending **M** messages, and a bandwidth
+of **B** messages on each tick. Assumptions:
 
 - A fully reliable network, where no messages are dropped as long
   as fewer than **B** messages are sent.
 - All messages after **B** messages are sent are dropped.
-- Any nodes can send to any other node in the network.
+- Any node can send to any other node in the network.
 - All nodes send messages at specific times.
-- At each tick they will randomly pick at most **M** distinct nodes
-  that they have not communicated with (sent to/received from) and
-  send messages to them.
+- At each tick random nodes will communicate with at most **M**
+  random, distinct nodes that they have not sent to/received from.
 
-What is being measured is the number of iterations/ticks required in
-order to make every peer/node aware of the message. Typically the
+What is being measured is the number of iterations/ticks required
+in order to make every node aware of the message. Typically the
 lower the number of ticks, the better. But this comes with a cost
 in **B** and **M**.
 
