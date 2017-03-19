@@ -34,25 +34,22 @@ def allocate(size):
 
 def simulate(size, bandwidth, messages):
     start = allocate(size)
-    K = [start]
     knows = {start}
 
     while True:
         quota = bandwidth
-        shuffle(K)
-        for p in K:
-            # to make sure we do not send more than B messages
-            # we need to check if we have any remaining quota.
-            for _ in range(min(quota, messages)):
-                node, ok = p.tell()
-                if not ok:
-                    break
-                knows.add(node)
-                quota -= 1
-            if quota == 0:
-                break
+        T = {node: messages for node in knows}
+        while T and quota > 0:
+            node, count = T.popitem()
+            if count == 0:
+                continue
+            peer, ok = node.tell()
+            if not ok:
+                continue
+            knows.add(peer)
+            T[node] = count - 1
+            quota -= 1
 
-        K = list(knows)
         k = len(knows)
         yield k
         if k == size:
