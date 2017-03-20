@@ -1,4 +1,3 @@
-from itertools import islice
 from random import shuffle, choice
 
 

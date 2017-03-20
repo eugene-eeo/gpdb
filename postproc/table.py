@@ -17,13 +17,12 @@ import sys
 
 def main():
     args = docopt.docopt(__doc__)
-    tfmt = args['--fmt']
-    stdin = sys.stdin
-
-    with nlj.open(stdin) as src:
+    with nlj.open(sys.stdin) as src:
         cols = next(src)
-        data = [line for line in src]
-        print(tabulate(data, tablefmt=tfmt, headers=cols))
+        print(tabulate(
+            src,
+            tablefmt=args['--fmt'],
+            headers=cols))
 
 
 if __name__ == '__main__':
