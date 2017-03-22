@@ -40,7 +40,7 @@ def parse_step(step):
 
 def task(arg):
     M, B = arg
-    return len(list(simulate(100, bandwidth=B, messages=M)))
+    return sum(1 for _ in simulate(100, bandwidth=B, messages=M))
 
 
 def run(mrange, brange, executor, times):

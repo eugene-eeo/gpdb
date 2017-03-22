@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import sys
-import json
 import matplotlib.pyplot as plt
+import newlinejson as nlj
 from collections import defaultdict
 from matplotlib.backends.backend_pdf import PdfPages
 from statistics import median
@@ -11,11 +11,9 @@ from statistics import median
 def main(filename):
     tbl = defaultdict(dict)
     sys.stdin.readline()
-    for line in sys.stdin:
-        M, B, ticks = json.loads(line)
+    for M, B, ticks in nlj.open(sys.stdin, 'r'):
         ticks.sort()
         tbl[B][M] = median(ticks), (max(ticks) - min(ticks)) / 2.0
-
 
     with PdfPages(filename) as pdf:
         for i, B in enumerate(sorted(tbl)):

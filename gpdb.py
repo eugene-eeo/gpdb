@@ -24,8 +24,7 @@ class Node:
 def allocate(size):
     peers = set(Node() for _ in range(size))
     for node in peers:
-        node.peers = peers.copy()
-        node.peers.remove(node)
+        node.peers = peers - {node}
 
     start = next(iter(peers))
     start.has_knowledge = True
